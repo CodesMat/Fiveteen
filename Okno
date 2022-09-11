@@ -1,3 +1,5 @@
+//vytvorit menu
+//vytvorit Help což je okno s textem 
 package view;
 
 import Tlacitka.PuzzleTlacitko;
