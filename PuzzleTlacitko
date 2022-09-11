@@ -1,0 +1,43 @@
+package Tlacitka;
+
+import java.awt.Color;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JButton;
+import model.ModelVypoctu;
+
+public class PuzzleTlacitko extends JButton implements Observer{
+    ModelVypoctu model;
+    final int indexPole;
+    // konstuktor
+    public PuzzleTlacitko() {
+        this.indexPole = 0;
+    }
+    public PuzzleTlacitko(int index, ModelVypoctu model) {
+        this.model = model;
+        this.indexPole = index;
+        this.setText(String.valueOf(model.getCtverec()[index]));
+        this.setFont(new java.awt.Font("Tahoma", 1, 16));
+        model.addObserver(this);
+        this.setBackground(new java.awt.Color(204, 255, 204));
+        if(indexPole==15){
+            this.setBackground(Color.white);
+            this.setText("");
+        }
+    }
+        
+    public int getIndexPole() {
+        return indexPole;
+    }
+    
+    @Override
+    public void update(Observable o, Object o1) {
+        int[] pole = model.getCtverec();
+        int hodnotaPole = pole[indexPole];
+        this.setText(String.valueOf(hodnotaPole));
+        if(hodnotaPole==0){
+            this.setBackground(Color.white);
+            this.setText("");
+        }else this.setBackground(new java.awt.Color(204, 255, 204));
+    }
+}
