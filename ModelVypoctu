@@ -1,0 +1,95 @@
+package model;
+
+import java.util.Observable;
+import java.util.Random;
+
+public class ModelVypoctu extends Observable{
+    private final int[] ctverec;
+    private final Random rn = new Random();
+    
+    public int[] getCtverec() {
+        return ctverec;
+    }
+
+    public ModelVypoctu() {
+        ctverec = new int[16];
+        for (int i=1; i < ctverec.length; i++)ctverec[i-1] = i;
+    }
+    
+    // funkce na pohyb
+    public void move( int i ) {
+        if (tryAbove(i)) return;
+        if (tryBelow(i)) return;
+        if (tryLeft(i))  return;
+        if (tryRight(i)) return;
+    }
+    private boolean tryAbove( int pos ) {
+        if (pos < 4)
+          return false;
+        if (ctverec[pos-4] != 0)
+          return false;
+        swap( pos, pos-4 );
+        return true;
+    }
+    private boolean tryBelow( int pos ) {
+        if (pos > 11)
+          return false;
+        if (ctverec[pos+4] != 0)
+          return false;
+        swap( pos, pos+4 );
+        return true;
+  }
+    private boolean tryLeft( int pos ) {
+        if (pos%4 == 0)
+          return false;
+        if (ctverec[pos-1] != 0)
+          return false;
+        swap( pos, pos-1 );
+        return true;
+  }
+    private boolean tryRight( int pos ) {
+        if (pos%4 == 3)
+          return false;
+        if (ctverec[pos+1] != 0)
+          return false;
+        swap( pos, pos+1 );
+        return true;
+  }
+    private void swap( int one, int two ) {
+        int   temp = ctverec[one];
+        ctverec[one] = ctverec[two];
+        ctverec[two] = temp;
+        setChanged();
+        notifyObservers();
+    }
+    
+    // funkce na michani
+    public void scramble() {
+        int[] neighbors = new int[4];
+        int   pocetSousedu, temp, moveTo, blank = 15;
+        for (int i=0; i < ctverec.length; i++){
+            if(ctverec[i]==0){
+                blank = i;
+                break;
+            }
+        };
+        for (int i=0; i < 200; i++) {
+            pocetSousedu = najdiSousedy( blank, neighbors );
+            moveTo = neighbors[ rn.nextInt(pocetSousedu) ];
+            temp = ctverec[moveTo];
+            ctverec[moveTo] = ctverec[blank];
+            ctverec[blank]  = temp;
+            blank = moveTo;
+        }
+        setChanged();
+        notifyObservers();
+    }
+    private int najdiSousedy( int blank, int[] array ) {
+        int numNeighbors = 0;
+        if (blank >  3)     array[numNeighbors++] = blank - 4;
+        if (blank < 12)     array[numNeighbors++] = blank + 4;
+        if (blank % 4 != 0) array[numNeighbors++] = blank - 1;
+        if (blank % 4 != 3) array[numNeighbors++] = blank + 1;
+        return numNeighbors;
+  }
+}
