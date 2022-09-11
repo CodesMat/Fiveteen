@@ -1,0 +1,42 @@
+package view;
+
+import Tlacitka.PuzzleTlacitko;
+import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import model.ModelVypoctu;
+
+public class Okno extends javax.swing.JFrame {
+    ModelVypoctu model;
+    
+    public Okno(ModelVypoctu model) {
+        super("Fifteen Puzzle");
+        this.model=model;
+        initComponents();
+        getContentPane().setBackground(Color.white);
+         try {
+            this.setIconImage(ImageIO.read(this.getClass().getResource("ikona.png")));
+        } catch (IOException ex) {
+            Logger.getLogger(Okno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        @SuppressWarnings("unchecked")
+        
+          private void stiskTlacitka(java.awt.event.ActionEvent evt) {                               
+       int indexPole = ((PuzzleTlacitko)(evt.getSource())).getIndexPole();
+       model.move(indexPole);
+    }   
+    
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        System.exit(0);
+    }    
+      private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
+         model.scramble();
+    } 
+      private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {                                           
+          new Help(this,true).setVisible(true);
+    }  
