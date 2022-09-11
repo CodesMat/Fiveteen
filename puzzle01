@@ -1,0 +1,14 @@
+package puzzle01;
+
+import model.ModelVypoctu;
+import view.Okno;
+
+public class Puzzle01 {
+
+    public static void main(String[] args) {
+        ModelVypoctu model = new ModelVypoctu();
+        Okno mojeOkno = new Okno(model);
+        
+        mojeOkno.setVisible(true);
+    }
+}
